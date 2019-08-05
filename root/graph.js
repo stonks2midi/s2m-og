@@ -40,7 +40,7 @@ class Snake {
     }
 }
 
-var snakey = new Snake(window.innerWidth / 3, window.innerHeight / 2, [255, 0, 0], 30, 500);
+var snakey = new Snake(0, window.innerHeight / 2, [255, 0, 0], 30, 500);
 
 function setup() {
     var canvas = createCanvas(window.innerWidth, window.innerHeight - 70);
