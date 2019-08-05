@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="{{ @locale }}" dir="{{ @localeDirection }}">
+    <head>
+        <title>{{ title }}</title>
+        <script src="../lib/p5.js"></script>
+        <script src="../lib/tone.js"></script>
+        <script src="../graph.js"></script>
+        {{ @import ../root/metas }}
+    </head>
+    <body>
+        {{ @import header }}
+        <main>
+            <div id="graphCanvas"></div>
+        </main>
+    </body>
+</html>

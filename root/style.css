@@ -1,0 +1,21 @@
+main {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 70px);
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 20px);
+    height: 50px;
+    padding: 10px;
+    background-color: #f7f7f7;
+}
+
+#headerLogo {
+    height: 50px;
+}
