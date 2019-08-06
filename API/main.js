@@ -21,8 +21,11 @@ function getExchangeRate(from, to) {
     let data = JSON.parse(this.response);
     console.log(data);
 
-    // let exchangeRate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
-    // console.log(exchangeRate);
+    let dataValuesArray = Object.values(data["Time Series FX (Monthly)"]).map(function(item) {
+      return parseFloat(item["4. close"]);
+    });
+
+    console.log(dataValuesArray);
   }
 
   request.send();
