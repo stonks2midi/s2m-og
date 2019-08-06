@@ -16,8 +16,6 @@ function draw() {
     var previousData = (window.innerHeight - 70) * (1 - (data[i] / 2));
 
     for (var i = 0; i < 10; i++) {
-        console.log(window.innerWidth * (i / 12));
-        
         line((window.innerWidth * (i / 12)) - (window.innerWidth / 12), previousData, (window.innerWidth * ((i + 1) / 12)) - (window.innerWidth / 12), (window.innerHeight - 70) * (1 - (data[i] / 2)));
 
         previousData = (window.innerHeight - 70) * (1 - (data[i] / 2));
