@@ -21,14 +21,22 @@ function getExchangeRate(from, to) {
     let data = JSON.parse(this.response);
     console.log(data);
 
-    let dataValuesArray = Object.values(data["Time Series FX (Monthly)"]).map(function(item) {
-      return parseFloat(item["4. close"]);
-    });
+    let dataValuesArray = Object
+      .entries(data["Time Series FX (Monthly)"])
+      .sort(function(a, b) {
+        return new Date(a[0]) - new Date(b[0]);
+      })
+      .map(function(item) {
+        return parseFloat(item[1]["4. close"]);
+      });
 
     console.log(dataValuesArray);
+
+    return dataValuesArray;
   }
 
   request.send();
+  
 }
 
 // Get the data from the user's input
