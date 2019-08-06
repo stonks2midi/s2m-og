@@ -6,30 +6,54 @@ const API_KEY = "8KOBOUBTEF7RHR21";
 
 // FUNCTIONS
 
+function transformAPIData(data, rootKey) {
+  let dataValuesArray = Object
+    .entries(data[rootKey])
+    .sort(function(a, b) {
+      return new Date(a[0]) - new Date(b[0]);
+    })
+    .map(function(item) {
+      return parseFloat(item[1]["4. close"]);
+    });
+
+    return dataValuesArray;
+}
+
 function getExchangeRate(from, to) {
   let request = new XMLHttpRequest();
 
-  let requestURL = `https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol=${from}&to_symbol=${to}&apikey=8KOBOUBTEF7RHR21`;
-  console.log(requestURL);
+  let requestURL = `https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol=${from}&to_symbol=${to}&apikey=${API_KEY}`;
   
   request.open('GET', requestURL, true);
-
-  console.log('stonk function called');
   
   request.onload = function() {
     //Begin accessing JSON data here
     let data = JSON.parse(this.response);
-    console.log(data);
 
-    let dataValuesArray = Object
-      .entries(data["Time Series FX (Monthly)"])
-      .sort(function(a, b) {
-        return new Date(a[0]) - new Date(b[0]);
-      })
-      .map(function(item) {
-        return parseFloat(item[1]["4. close"]);
-      });
+    let dataValuesArray = transformAPIData(data, "Time Series FX (Monthly)");
 
+    console.log(dataValuesArray);
+
+    return dataValuesArray;
+  }
+
+  request.send();
+  
+}
+
+function getStonks(symbol) {
+  let request = new XMLHttpRequest();
+
+  let requestURL = `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${symbol}&apikey=${API_KEY}`;
+  
+  request.open('GET', requestURL, true);
+
+  request.onload = function() {
+    //Begin accessing JSON data here
+    let data = JSON.parse(this.response);
+
+    let dataValuesArray = transformAPIData(data, "Monthly Time Series");
+    
     console.log(dataValuesArray);
 
     return dataValuesArray;
@@ -43,11 +67,8 @@ function getExchangeRate(from, to) {
 
 document.getElementById("stonkForm").addEventListener('submit', function(e) {
   e.preventDefault();
-  console.log('from and to currency submitted');
   let fromCode = document.getElementById("fromCurrencyCode").value;
-  console.log(fromCode);
   let toCode = document.getElementById("toCurrencyCode").value;
-  console.log(toCode);
 
   getExchangeRate(fromCode, toCode);
 });
@@ -59,15 +80,11 @@ currencyRequest.open('GET', 'https://www.alphavantage.co/physical_currency_list/
 
 currencyRequest.onload = function() {
   //Begin accessing JSON data here
-  console.log(this.response);
   let data = this.response;
-  console.log(data);
 
   let dataArray = data.split('\n');
   dataArray.shift();
   dataArray.pop();
-
-  console.log(dataArray);
 
   dataArray.forEach(function(item) {
     let option = document.createElement("option");
@@ -82,35 +99,4 @@ currencyRequest.onload = function() {
 
 currencyRequest.send();
 
-// Get the data from the stonk API
-let request = new XMLHttpRequest();
-
-request.open('GET', 'https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol=GBP&to_symbol=EUR&apikey=8KOBOUBTEF7RHR21', true);
-
-request.onload = function() {
-  //Begin accessing JSON data here
-  let data = JSON.parse(this.response);
-  console.log(data);
-
-  // let exchangeRate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
-  // console.log(exchangeRate);
-}
-
-request.send();
-
-$('exchangeRate').innerHTML = exchangeRate;
-
-/**
- * Gets currency data from the alpha advantage API
- * 
- * @param {*} from 
- * @param {*} to 
- * 
- * @returns JSON
- */
-function getCurrencyData(from = "GBP", to = "EUR") {
-  // Build the url for the api using the symbols passed in the function prototype
-  var url = ''; 
-
-  // 
-}
+getStonks("MSFT");
